@@ -5,6 +5,7 @@ import Button from './Button';
 import EventContainer from './EventContainer';
 import EventSection from './EventSection';
 import Input from './Input';
+import Spinner from './Spinner';
 
 
 class Login extends Component{
@@ -12,23 +13,46 @@ class Login extends Component{
   state={
     email: '',
     password: '',
-    error: ''
+    error: '',
+    loading: false
   };
 
   onLoginPressed() {
-    console.log('LOGIN PRESSED AUTHENTICATING....');
+
+    this.setState({ error: '', loading: true });
+//.then is executed only if everything works out
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .then(this.onLoginSuccess.bind(this))
     .catch(() => {
-      console.log('SOmething wrong');
-      this.setState({ error: 'No User Creating user..' });
+      this.setState({ error: 'No User Creating user..', loading:false });
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(this.onLoginSuccess.bind(this))
       .catch(() => {
-        console.log('Another thing wrong');
-        this.setState({ error: 'Incorrect Password' });
+        this.setState({ error: 'Incorrect Password', loading:false });
       });
     });
     console.log('DONE');
   }
+
+onLoginSuccess(){
+  this.setState({
+    email:'',
+    password:'',
+    loading:false,
+    error:''
+  });
+}
+
+  renderButton(){
+      if(this.state.loading){
+        return <Spinner size="large"/>
+      }
+      else{
+        return(
+            <Button title="Login" onPress={this.onLoginPressed.bind(this)} />
+        )
+      }
+}
 
 
   render() {
@@ -58,8 +82,8 @@ class Login extends Component{
 
                                   <Text>{this.state.error}</Text>
                                 <EventSection>
+                                    {this.renderButton()}
 
-                                  <Button title="Login" onPress={this.onLoginPressed.bind(this)} />
                                 </EventSection>
 
                       </EventContainer>
