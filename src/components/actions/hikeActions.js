@@ -28,7 +28,6 @@ export const eventCreate = (name, description) =>{
 
 
 export const eventFetch = (name, description) =>{
-
   const currentUser = firebase.auth().currentUser;
     return (dispatch)=>{
         //make a ref to the database and the current user's events

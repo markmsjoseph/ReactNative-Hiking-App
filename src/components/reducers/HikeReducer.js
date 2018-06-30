@@ -11,6 +11,7 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     //key interpolation
     case HIKE_FETCH_SUCCESS:
+      console.log("IN HIKE_FETCH_SUCCESS: ", action.payload);
     //create new key value pair where key is id and value is everything
       return action.payload;
 
