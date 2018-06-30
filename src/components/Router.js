@@ -1,16 +1,26 @@
 import React from 'react';
 import { Scene, Router } from 'react-native-router-flux';
-import Login from './Login';
+import LoginForm from './LoginForm';
 import Register from './Register';
 import LoginRegister from './LoginRegister';
+import HikeList from './HikeList';
+import HikeCreate from './HikeCreate';
+import {Actions} from 'react-native-router-flux';
 
   const RouterComponent = () => {
     return (
           <Router>
-            <Scene key="root">
-              <Scene key="LoginRegister" component={LoginRegister} title="Login or Register" />
-              <Scene key="login" component={Login} title="Please Login" />
-              <Scene key="register" component={Register} title="Register" />
+            <Scene key="root" hideNavBar>
+
+              <Scene key = "auth">
+                <Scene key="login" component={LoginForm} title="Please Login" />
+              </Scene>
+
+              <Scene key="main" rightTitle="Add" onRight={()=>{Actions.createHike()}}>
+                  <Scene key="hikeList" component={HikeList} title="List of all hikes" />
+                    <Scene key="createHike" component={HikeCreate} title="Create Event" />
+              </Scene>
+
             </Scene>
           </Router>
     );
@@ -18,3 +28,7 @@ import LoginRegister from './LoginRegister';
 
 
 export default RouterComponent;
+
+
+{/* <Scene key="loginRegister" component={LoginRegister} title="Login or Register" />
+<Scene key="register" component={Register} title="Please Register" /> */}

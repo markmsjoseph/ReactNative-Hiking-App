@@ -1,6 +1,10 @@
 import firebase from 'firebase';
 import {EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER} from './types';
+import {Actions} from 'react-native-router-flux';
 
+//NOTE actions must return a type, payload is the data contained in it eg the textinput
+
+//if the email is entered, we return an actiontype of EMAILCHANGED and the payload is the text
 export const emailChanged = (text) => {
   return {
     type: EMAIL_CHANGED,
@@ -15,8 +19,7 @@ export const passwordChanged = (text) => {
   };
 };
 
-
-
+//login in user with firebase
 export const loginUser = (email, password ) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
@@ -33,14 +36,17 @@ export const loginUser = (email, password ) => {
   };
 };
 
+
 const loginUserFail = (dispatch) => {
   dispatch({ type: LOGIN_USER_FAIL });
 };
+
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
-
+  //navigate user to this page, main is the key in router file
+  Actions.main();
 };

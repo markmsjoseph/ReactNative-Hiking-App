@@ -1,32 +1,84 @@
 import React, {Component} from 'react';
-import {TextInput, Text} from 'react-native';
+import {TextInput, Text, View} from 'react-native';
+import {connect} from 'react-redux';
 import Button from './Button';
 import EventContainer from './EventContainer';
 import EventSection from './EventSection';
 import Input from './Input';
+import Spinner from './Spinner';
+import {emailChanged, passwordChanged, loginUser, usernameChanged} from './actions/actions';
 
+
+//redux
+//1. user types something
+//2. call onEmilChanged handler from input field to create a new actions
+//3. returns a new action object with a payload and types
+//4. newly returned action will be sent to all reducers
 
 class Register extends Component{
 
-  state={
-    email: '',
-    password:''
-  };
+  onEmailChanged(text){
+      this.props.emailChanged(text);
+  }
+
+  onPasswordChange(password){
+      //call action creator from actions file
+      this.props.passwordChanged(password);
+  }
+
+  onUsernameChange(){
+    this.props.usernameChanged(password);
+  }
+
+  onButtonPress(){
+    this.props.loginUser(this.props.email, this.props.password);
+  }
+
+  renderError(){
+    if(this.props.error){
+      return(
+        <View>
+          <Text> {this.props.error}</Text>
+        </View>
+      )
+    }
+  }
 
 
+  renderButton(){
+    if(this.props.loading){
+      return <Spinner size="large" />;
+    }
+    else {
+      return(
+          <Button title ="Login" onPress={this.onButtonPress.bind(this)} />
+      );
 
+    }
+  }
 
   render() {
-                return(
+    console.log("PROPS Email", this.props.email);
+    console.log("PROPS Password", this.props.password);
+                return (
 
                       <EventContainer >
+
+                        <EventSection>
+                          <Input
+                            secureTextEntry
+                            placeholder="user1"
+                            label="Username"
+
+                          />
+                        </EventSection>
 
                                 <EventSection>
                                     <Input
                                       placeholder="user@gmail.com"
                                       label="Email"
-                                      value={this.state.text}
-                                      onChangeText={ (email)=>{this.setState({email})}}
+                                      onChangeText={this.onEmailChanged.bind(this)}
+                                      value={this.props.email}
                                     />
                                 </EventSection>
 
@@ -36,14 +88,15 @@ class Register extends Component{
                                     secureTextEntry
                                     placeholder="Password"
                                     label="Password"
-                                    value={this.state.password}
-                                      onChangeText={ (password)=>{this.setState({password})}}
+                                    onChangeText={this.onPasswordChange.bind(this)}
+                                    value={this.props.password}
                                   />
                                 </EventSection>
 
-
+                              {this.renderError()}
                                 <EventSection>
-                                  <Button title="Register" />
+                                  {this.renderButton()}
+
                                 </EventSection>
 
                       </EventContainer>
@@ -53,5 +106,16 @@ class Register extends Component{
 
 }//end class
 
+const mapStateToProps = state =>{
 
-export default Register;
+  return{
+    email:state.auth.email,
+    password:state.auth.password,
+    error:state.auth.error,
+    loading:state.auth.loading,
+    username: state.auth.username
+  };
+}
+
+
+export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser })(Register);
