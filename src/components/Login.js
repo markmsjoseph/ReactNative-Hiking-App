@@ -31,7 +31,6 @@ class Login extends Component{
         this.setState({ error: 'Incorrect Password', loading:false });
       });
     });
-    console.log('DONE');
   }
 
 onLoginSuccess(){

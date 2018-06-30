@@ -5,7 +5,7 @@ import EventContainer from './EventContainer';
 import EventSection from './EventSection';
 import Button from './Button';
 import Input from './Input';
-import {hikeUpdate} from './actions/hikeActions';
+import {hikeUpdate, eventCreate} from './actions/hikeActions';
 
 
 const styles = {
@@ -46,6 +46,10 @@ class HikeCreate extends Component{
     this.props.hikeUpdate({prop:'description', value:text});
   }
 
+  onButtonPress(){
+    this.props.eventCreate(this.props.name, this.props.description);
+  }
+
     render(){
 
               return(
@@ -73,7 +77,7 @@ class HikeCreate extends Component{
 
 
                         <EventSection>
-                              <Button title="Create Hike Event" />
+                              <Button title="Create Hike Event" onPress={this.onButtonPress.bind(this)}/>
                         </EventSection>
                 </EventContainer>
 
@@ -90,4 +94,4 @@ const mapStateToProps = state =>{
   };
 }
 
-export default connect(mapStateToProps, {hikeUpdate})(HikeCreate);
+export default connect(mapStateToProps, {hikeUpdate, eventCreate})(HikeCreate);

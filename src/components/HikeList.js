@@ -1,37 +1,57 @@
 import React, {Component} from 'react';
-import {Text, ScrollView} from 'react-native';
+import _ from 'lodash';
+import {Text, ListView, ScrollView} from 'react-native';
+import {connect} from 'react-redux';
 import HikeEventDetails from './HikeEventDetails';
-import axios from 'axios';
+import {eventFetch} from './actions/hikeActions';
+import ListItem from './ListItem';
+
 
 class HikeList extends Component{
 
 
-      // //on mount we get the data and set it to the state. axiosis asyncronous
-      // componentWillMount(){
-      //   axios.get('https://rallycoding.herokuapp.com/api/music_albums').then(response=> this.setState({hikeEvent:response.data}));
-      // }
+      //on mount we get the data and set it to the state. axiosis asyncronous
+      componentWillMount(){
+        this.props.eventFetch();
+        this.createDataSource(this.props);
+      }
 
-      //render data to screen
-      // renderData(){
-      //       return this.state.hikeEvent.map((hike) =>{
-      //             return <HikeEventDetails key ={hike.title} hike={hike}/>
-      //       });
-      // }
+      componentWillReceiveProps(nextProps){
+          this.createDataSource(nextProps);
+      }
+
+      createDataSource({hikes}){
+        const ds = new ListView.DataSource({
+          rowHasChanged:(r1,r2) => r1 !== r2
+        });
+        this.dataSource = ds.cloneWithRows(hikes);
+      }
+
+      renderRow(hike){
+        return <ListItem hike={hike} />;
+      }
 
       render(){
                 return(
-                      <ScrollView >
-
-                      <Text>LIST</Text>
-                        <Text>LIST</Text>
-                          <Text>LIST</Text>
-                            <Text>LIST</Text>
-                              <Text>LIST</Text>
-                      </ScrollView>
+                  <ListView
+                    enableEmptySections
+                    dataSource = {this.dataSource}
+                    renderRow={this.renderRow}
+                  />
                 );
       }
 
 }//end class
 
+const mapStateToProps = state =>{
+  //state.hikes is an object with may key val pairs,
+  //for each key val pair run map, and put the objects into an array
+  //vid 148
+  const hikes = _.map(state.hikes, (val, uid) =>{
+    return {...val, uid}
+  });
+  return {hikes};
+};
 
-export default HikeList;
+
+export default connect(mapStateToProps,{eventFetch}) (HikeList);

@@ -8,3 +8,5 @@ export const LOGIN_USER_FAIL= 'login_user_fail';
 export const LOGIN_USER = 'login_user';
 
 export const HIKE_UPDATE = 'hike_update';
+export const HIKE_CREATE = 'hike_create';
+export const HIKE_FETCH_SUCCESS = 'hike_fetch_success';
