@@ -6,7 +6,7 @@ import EventContainer from './EventContainer';
 import EventSection from './EventSection';
 import Input from './Input';
 import Spinner from './Spinner';
-import {emailChanged, passwordChanged, loginUser} from './actions/actions';
+import {emailChanged, passwordChanged, loginUser, resetError} from './actions/actions';
 
 
 //redux
@@ -28,6 +28,10 @@ class Login extends Component{
 
   onButtonPress(){
     this.props.loginUser(this.props.email, this.props.password);
+  }
+  componentWillMount(){
+    console.log("IN WILL MOUNT");
+    this.props.resetError();
   }
 
   renderError(){
@@ -106,4 +110,4 @@ const mapStateToProps = state =>{
 }
 
 
-export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser })(Login);
+export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser, resetError })(Login);

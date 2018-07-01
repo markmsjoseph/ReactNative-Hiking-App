@@ -13,7 +13,9 @@ import {Actions} from 'react-native-router-flux';
             <Scene key="root" hideNavBar>
 
               <Scene key = "auth">
+                <Scene key="loginRegister" component={LoginRegister} title="Login or Register" />
                 <Scene key="login" component={LoginForm} title="Please Login" />
+                <Scene key="register" component={Register} title="Please Register" />
               </Scene>
 
               <Scene key="main" rightTitle="Add" onRight={()=>{Actions.createHike()}}>

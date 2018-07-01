@@ -51,6 +51,7 @@ class HikeCreate extends Component{
   }
 
     render(){
+      console.log(this.props.hike);
 
               return(
                 <EventContainer>

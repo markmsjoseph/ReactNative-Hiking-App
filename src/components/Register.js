@@ -6,7 +6,7 @@ import EventContainer from './EventContainer';
 import EventSection from './EventSection';
 import Input from './Input';
 import Spinner from './Spinner';
-import {emailChanged, passwordChanged, loginUser, usernameChanged} from './actions/actions';
+import {emailChanged, passwordChanged, registerUser, resetError} from './actions/actions';
 
 
 //redux
@@ -26,12 +26,13 @@ class Register extends Component{
       this.props.passwordChanged(password);
   }
 
-  onUsernameChange(){
-    this.props.usernameChanged(password);
+  componentWillMount(){
+    console.log("IN WILL MOUNT");
+    this.props.resetError();
   }
 
   onButtonPress(){
-    this.props.loginUser(this.props.email, this.props.password);
+    this.props.registerUser(this.props.email, this.props.password);
   }
 
   renderError(){
@@ -58,20 +59,10 @@ class Register extends Component{
   }
 
   render() {
-    console.log("PROPS Email", this.props.email);
-    console.log("PROPS Password", this.props.password);
+
                 return (
 
                       <EventContainer >
-
-                        <EventSection>
-                          <Input
-                            secureTextEntry
-                            placeholder="user1"
-                            label="Username"
-
-                          />
-                        </EventSection>
 
                                 <EventSection>
                                     <Input
@@ -112,10 +103,9 @@ const mapStateToProps = state =>{
     email:state.auth.email,
     password:state.auth.password,
     error:state.auth.error,
-    loading:state.auth.loading,
-    username: state.auth.username
+    loading:state.auth.loading
   };
 }
 
 
-export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser })(Register);
+export default connect(mapStateToProps, {emailChanged, passwordChanged, registerUser, resetError })(Register);

@@ -1,4 +1,4 @@
-import {EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER} from '../actions/types';
+import {EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER, REGISTER_USER, REGISTER_USER_FAIL, REGISTER_USER_SUCCESS, RESET_ERROR} from '../actions/types';
 
 
 //this is to let other ppl known what this reducer is responsible for
@@ -21,7 +21,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, email: action.payload };
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
-            //user is loggin in so we want to show the spinner and clear any error messages
+    case RESET_ERROR:
+      return { INITIAL_STATE};
+
+    //user is loggin in so we want to show the spinner and clear any error messages
     case LOGIN_USER:
       return { ...state, loading: true, error: '' };
 
@@ -29,7 +32,24 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...INITIAL_STATE, user: action.payload };
       //login failed therefore we set an error message and stop the spinner from loading
     case LOGIN_USER_FAIL:
-      return { ...state, error: 'Authentication Failed.', password: '', loading: false };
+    console.log("USER FAIL");
+      return { ...state, error: 'Password incorrect or user doesnt exist', password: '', loading: false };
+
+
+
+    case REGISTER_USER_SUCCESS:
+      return { ...state, ...INITIAL_STATE, user: action.payload };
+      //login failed therefore we set an error message and stop the spinner from loading
+    case REGISTER_USER_FAIL:
+    console.log("REGISTER FAIL");
+      return { ...state, error: 'Registration fail. Username already exist or you entered an invalid email', password: '', loading: false };
+
+    case REGISTER_USER:
+      return { ...state, loading: true, error: '' };
+
+
+
+
       //there were no matching actions
     default:
       return state;
