@@ -1,4 +1,3 @@
-# ReactNative-PhotographyApp
+# ReactNative-Hiking App
 
-## PhotographyApp in process of building
-"# ReactNative-PhotographyApp" 
+## In process of being built
